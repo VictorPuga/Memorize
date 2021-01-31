@@ -12,7 +12,11 @@ class EmojiMemoryGame {
     
   
   private static func createMemoryGame() -> MemoryGame<String> {
-    let emojis = ["😀", "👻", "🐢"]
+    var emojis = ["😀", "👻", "🐢", "👌", "👾", "👽", "🤖", "💩"]
+    emojis.shuffle()
+    
+    emojis = Array(emojis.prefix(Int.random(in: 2...5)))
+    
     return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { emojis[$0] }
   }
   
