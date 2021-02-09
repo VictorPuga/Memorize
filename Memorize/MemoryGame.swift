@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: Model
+
 struct MemoryGame<CardContent> {
   var cards: [Card]
   
@@ -20,8 +22,19 @@ struct MemoryGame<CardContent> {
     cards.shuffle()
   }
   
-  func choose(card: Card) {
+  mutating func choose(_ card: Card) {
     print("chose: \(card)")
+    let cardIndex = index(of: card)
+    cards[cardIndex].isFaceUp.toggle()
+  }
+  
+  func index(of card: Card) -> Int {
+    for index in 0..<cards.count {
+      if cards[index].id == card.id {
+        return index
+      }
+    }
+    return 0 // TODO: improve fallback
   }
   
   struct Card: Identifiable {

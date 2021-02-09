@@ -5,4 +5,5 @@
 ## Main Topics
 - SwiftUI
 - MVVM architecture
-- ...
+- "ObservableObject"s
+- Protocol Oriented Programming
