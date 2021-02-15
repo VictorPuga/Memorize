@@ -5,5 +5,9 @@
 ## Main Topics
 - SwiftUI
 - MVVM architecture
-- "ObservableObject"s
+- `ObservableObject`s
 - Protocol Oriented Programming
+- `Extension`s
+- Swift's syntactic sugar
+- `Optional`s
+- `enum`s

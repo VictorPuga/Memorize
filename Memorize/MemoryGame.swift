@@ -9,8 +9,17 @@ import Foundation
 
 // MARK: Model
 
-struct MemoryGame<CardContent> {
+struct MemoryGame<CardContent> where CardContent: Equatable {
   var cards: [Card]
+  
+  var selectedCardIndex: Int? {
+    get { cards.indices.filter { cards[$0].isFaceUp }.only }
+    set {
+      for index in cards.indices {
+        cards[index].isFaceUp = index == newValue
+      }
+    }
+  }
   
   init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
     cards = []
@@ -23,23 +32,23 @@ struct MemoryGame<CardContent> {
   }
   
   mutating func choose(_ card: Card) {
-    print("chose: \(card)")
-    let cardIndex = index(of: card)
-    cards[cardIndex].isFaceUp.toggle()
-  }
-  
-  func index(of card: Card) -> Int {
-    for index in 0..<cards.count {
-      if cards[index].id == card.id {
-        return index
+    if let chosenIndex = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
+      if let previousSelectionIndex = selectedCardIndex {
+        if cards[chosenIndex].content == cards[previousSelectionIndex].content {
+          cards[chosenIndex].isMatched = true
+          cards[previousSelectionIndex].isMatched = true
+        }
+        cards[chosenIndex].isFaceUp = true
+      }
+      else {
+        selectedCardIndex = chosenIndex
       }
     }
-    return 0 // TODO: improve fallback
   }
   
   struct Card: Identifiable {
     var id: Int
-    var isFaceUp: Bool = true
+    var isFaceUp: Bool = false
     var isMatched: Bool = false
     var content: CardContent
   }
