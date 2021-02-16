@@ -1,30 +1,11 @@
 //
-//  EmojiMemoryGameView.swift
+//  CardView.swift
 //  Memorize
 //
-//  Created by Víctor Manuel Puga Ruiz on 31/01/21.
+//  Created by Víctor Manuel Puga Ruiz on 15/02/21.
 //
 
 import SwiftUI
-
-// MARK: View
-
-struct EmojiMemoryGameView: View {
-  @ObservedObject var viewModel: EmojiMemoryGame
-  
-  // MARK: - Body
-  var body: some View {
-    Grid(viewModel.cards) { card in
-      CardView(card: card)
-        .padding(5)
-        .onTapGesture {
-          viewModel.choose(card)
-        }
-    }
-    .padding()
-    .foregroundColor(.orange)
-  }
-}
 
 struct CardView: View {
   var card: MemoryGame<String>.Card
@@ -61,8 +42,10 @@ struct CardView: View {
 }
 
 // MARK: - Preview
-struct ContentView_Previews: PreviewProvider {
+struct CardView_Previews: PreviewProvider {
   static var previews: some View {
-    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+    CardView(card: .init(id: 0, content: "😎"))
+      .previewLayout(.sizeThatFits)
+      .padding()
   }
 }
