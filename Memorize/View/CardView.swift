@@ -44,8 +44,11 @@ struct CardView: View {
 // MARK: - Preview
 struct CardView_Previews: PreviewProvider {
   static var previews: some View {
-    CardView(card: .init(id: 0, content: "😎"))
-      .previewLayout(.sizeThatFits)
-      .padding()
+    Group {
+      CardView(card: .init(id: 0, content: "😎"))
+      CardView(card: .init(id: 0, isFaceUp: true, content: "😎"))
+    }
+    .previewLayout(.sizeThatFits)
+    .padding()
   }
 }

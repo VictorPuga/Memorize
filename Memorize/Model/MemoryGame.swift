@@ -11,6 +11,7 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
   var cards: [Card]
+  var points: Int = 0
   
   var selectedCardIndex: Int? {
     get { cards.indices.filter { cards[$0].isFaceUp }.only }
@@ -37,6 +38,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         if cards[chosenIndex].content == cards[previousSelectionIndex].content {
           cards[chosenIndex].isMatched = true
           cards[previousSelectionIndex].isMatched = true
+          points += 2
+        }
+        else { // Should this stop at 0?
+          points -= 1
         }
         cards[chosenIndex].isFaceUp = true
       }

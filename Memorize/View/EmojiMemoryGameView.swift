@@ -14,21 +14,32 @@ struct EmojiMemoryGameView: View {
   
   // MARK: - Body
   var body: some View {
-    Grid(viewModel.cards) { card in
-      CardView(card: card)
-        .padding(5)
-        .onTapGesture {
-          viewModel.choose(card)
-        }
+    VStack {
+      HStack {
+        Text("Points: ")
+          .foregroundColor(.black)
+        Text("\(viewModel.points)")
+      }
+      .font(.largeTitle)
+      Grid(viewModel.cards) { card in
+        CardView(card: card)
+          .padding(5)
+          .onTapGesture {
+            viewModel.choose(card)
+          }
+      }
     }
     .padding()
-    .foregroundColor(.orange)
+    .foregroundColor(viewModel.theme.color)
+    .navigationBarTitle(Text(viewModel.theme.name), displayMode: .inline)
   }
 }
 
 // MARK: - Preview
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+    NavigationView {
+      EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+    }
   }
 }
