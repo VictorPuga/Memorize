@@ -11,3 +11,6 @@
 - Swift's syntactic sugar
 - `Optional`s
 - `enum`s
+- `ViewModifier`s
+- `Shape`s
+- `@ViewBuilder`

@@ -10,10 +10,10 @@ import Foundation
 // MARK: Model
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
-  var cards: [Card]
+  private(set) var cards: [Card]
   var points: Int = 0
   
-  var selectedCardIndex: Int? {
+  private var selectedCardIndex: Int? {
     get { cards.indices.filter { cards[$0].isFaceUp }.only }
     set {
       for index in cards.indices {
