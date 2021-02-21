@@ -43,6 +43,10 @@ class EmojiMemoryGame: ObservableObject {
   
   func startGame(with index: Int) {
     themeIndex = index
+    resetGame()
+  }
+  
+  func resetGame() {
     game = Self.createMemoryGame(with: theme)
   }
   
@@ -54,3 +58,4 @@ class EmojiMemoryGame: ObservableObject {
     themes.append(theme)
   }
 }
+

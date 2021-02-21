@@ -25,8 +25,17 @@ struct EmojiMemoryGameView: View {
         CardView(card: card)
           .padding(5)
           .onTapGesture {
-            viewModel.choose(card)
+            withAnimation(.linear(duration: 0.75)) {
+              viewModel.choose(card)
+            }
           }
+      }
+      Button(action: {
+        withAnimation(.easeInOut) {
+          viewModel.resetGame()
+        }
+      }) {
+        Text("Reset game")
       }
     }
     .padding()

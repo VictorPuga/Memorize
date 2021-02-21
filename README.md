@@ -14,3 +14,4 @@
 - `ViewModifier`s
 - `Shape`s
 - `@ViewBuilder`
+- Animation
