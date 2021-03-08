@@ -55,3 +55,13 @@ Lecture 1: Course Logistics and Intro to SwiftUI
 [Video](https://www.youtube.com/watch?v=tmx-OwkBWxA)
 
 [Slides](./Resources/Slides/l7.pdf)
+
+## Lecture 8: Gestures, JSON
+
+[Video](https://www.youtube.com/watch?v=mz-rNLWJ0bk)
+
+[Slides](./Resources/Slides/l8.pdf)
+
+[Assignment 4](./Resources/Assignments/a4.pdf)
+
+[Assignment 5](./Resources/Assignments/a5.pdf)
