@@ -6,25 +6,30 @@
 //
 
 import SwiftUI
+import Combine
 
 class EmojiArtDocument: ObservableObject {
   static let pallete: String = "🐢😎🐶😛🤓"
   
-  /* @Published*/ private var emojiArt: EmojiArt {
-    willSet {
-      objectWillChange.send()
-    }
-    didSet {
-      UserDefaults.standard.set(emojiArt.json, forKey: Self.untitled)
-    }
-  }
+  @Published private var emojiArt: EmojiArt
   
   @Published private(set) var backgroundImage: UIImage?
   
   private static let untitled = "EmojiArtDocument.Untitled"
   
+  // MARK: - Cancellables
+  
+  private var autosaveCancellable: AnyCancellable?
+  
+  private var fetchImageCancellable: AnyCancellable?
+  
+  // MARK: - init
+  
   init() {
     emojiArt = EmojiArt(json: UserDefaults.standard.data(forKey: Self.untitled)) ?? EmojiArt()
+    autosaveCancellable = $emojiArt.sink { emojiArt in
+      UserDefaults.standard.set(emojiArt.json, forKey: Self.untitled)
+    }
     fetchBackgroundImage()
   }
   
@@ -55,23 +60,26 @@ class EmojiArtDocument: ObservableObject {
     }
   }
   
-  func setBackgroundURL(_ url: URL?) {
-    emojiArt.backgroundURL = url?.imageURL
-    fetchBackgroundImage()
+  var backgroundURL: URL? {
+    get {
+      emojiArt.backgroundURL
+    }
+    set {
+      emojiArt.backgroundURL = newValue?.imageURL
+      fetchBackgroundImage()
+    }
   }
   
   private func fetchBackgroundImage() {
     backgroundImage = nil
     if let url = emojiArt.backgroundURL {
-      DispatchQueue.global(qos: .userInitiated).async {
-        if let imageData = try? Data(contentsOf: url) {
-          DispatchQueue.main.async { [self] in
-            if url == emojiArt.backgroundURL {
-              backgroundImage = UIImage(data: imageData)
-            }
-          }
-        }
-      }
+      fetchImageCancellable?.cancel()
+      
+      fetchImageCancellable = URLSession.shared.dataTaskPublisher(for: url)
+        .map { data, urlResponse in UIImage(data: data) }
+        .receive(on: DispatchQueue.main)
+        .replaceError(with: nil)
+        .assign(to: \.backgroundImage, on: self)
     }
   }
 }
