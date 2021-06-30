@@ -41,7 +41,7 @@ struct EditableText: View {
             }
         }
         .onAppear { self.editableText = self.text }
-        .foregroundColor(isEditing ? .green : .red)
+        // .foregroundColor(isEditing ? .green : .red)
     }
     
     func callOnChangedIfChanged() {

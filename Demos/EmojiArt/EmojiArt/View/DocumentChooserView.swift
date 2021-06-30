@@ -52,6 +52,7 @@ struct DocumentChooserView: View {
       )
       .environment(\.editMode, $editMode)
     }
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

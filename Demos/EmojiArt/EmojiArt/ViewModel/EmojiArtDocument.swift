@@ -41,6 +41,20 @@ class EmojiArtDocument: ObservableObject, Identifiable {
     fetchBackgroundImage()
   }
   
+  var url: URL? {
+    didSet { save(emojiArt) }
+  }
+  
+  init(url: URL) {
+    id = UUID()
+    self.url = url
+    emojiArt = EmojiArt(json: try? Data(contentsOf: url)) ?? EmojiArt()
+    fetchBackgroundImage()
+    autosaveCancellable = $emojiArt.sink { emojiArt in
+      self.save(emojiArt)
+    }
+  }
+  
   // MARK: - Access to the model
   
   var emojis: [EmojiArt.Emoji] { emojiArt.emojis }
@@ -88,6 +102,12 @@ class EmojiArtDocument: ObservableObject, Identifiable {
         .receive(on: DispatchQueue.main)
         .replaceError(with: nil)
         .assign(to: \.backgroundImage, on: self)
+    }
+  }
+  
+  private func save(_ emojiArt: EmojiArt) {
+    if url != nil {
+      try? emojiArt.json?.write(to: url!)
     }
   }
 }
