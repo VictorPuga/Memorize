@@ -17,10 +17,10 @@ struct EmojiArtApp: App {
       // EmojiArtDocumentView(document: EmojiArtDocument())
       DocumentChooserView()
         .environmentObject(store)
-        // .onAppear {
-        //   store.addDocument()
-        //   store.addDocument(named: "hello")
-        // }
+      // .onAppear {
+      //   store.addDocument()
+      //   store.addDocument(named: "hello")
+      // }
     }
   }
 }

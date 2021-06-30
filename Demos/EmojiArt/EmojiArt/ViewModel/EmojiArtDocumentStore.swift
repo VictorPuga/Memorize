@@ -10,15 +10,15 @@ import SwiftUI
 import Combine
 
 class EmojiArtDocumentStore: ObservableObject {
-    let name: String
-    
-    func name(for document: EmojiArtDocument) -> String {
-        if documentNames[document] == nil {
-            documentNames[document] = "Untitled"
-        }
-        return documentNames[document]!
+  let name: String
+  
+  func name(for document: EmojiArtDocument) -> String {
+    if documentNames[document] == nil {
+      documentNames[document] = "Untitled"
     }
-    
+    return documentNames[document]!
+  }
+  
   func setName(_ name: String, for document: EmojiArtDocument) {
     if let url = directory?.appendingPathComponent(name) {
       if !documentNames.values.contains(name) {
@@ -29,10 +29,10 @@ class EmojiArtDocumentStore: ObservableObject {
       documentNames[document] = name
     }
   }
-    
-    var documents: [EmojiArtDocument] {
-        documentNames.keys.sorted { documentNames[$0]! < documentNames[$1]! }
-    }
+  
+  var documents: [EmojiArtDocument] {
+    documentNames.keys.sorted { documentNames[$0]! < documentNames[$1]! }
+  }
   
   func addDocument(named name: String = "Untitled") {
     let uniqueName = name.uniqued(withRespectTo: documentNames.values)
@@ -44,26 +44,26 @@ class EmojiArtDocumentStore: ObservableObject {
     }
     documentNames[document] = uniqueName
   }
-
+  
   func removeDocument(_ document: EmojiArtDocument) {
     if let name = documentNames[document], let url = directory?.appendingPathComponent(name) {
       try? FileManager.default.removeItem(at: url)
     }
     documentNames[document] = nil
   }
-    
-    @Published private var documentNames = [EmojiArtDocument: String]()
-    
-    private var autosave: AnyCancellable?
-    
-    init(named name: String = "Emoji Art") {
-        self.name = name
-        let defaultsKey = "EmojiArtDocumentStore.\(name)"
-        documentNames = Dictionary(fromPropertyList: UserDefaults.standard.object(forKey: defaultsKey))
-        autosave = $documentNames.sink { names in
-            UserDefaults.standard.set(names.asPropertyList, forKey: defaultsKey)
-        }
+  
+  @Published private var documentNames = [EmojiArtDocument: String]()
+  
+  private var autosave: AnyCancellable?
+  
+  init(named name: String = "Emoji Art") {
+    self.name = name
+    let defaultsKey = "EmojiArtDocumentStore.\(name)"
+    documentNames = Dictionary(fromPropertyList: UserDefaults.standard.object(forKey: defaultsKey))
+    autosave = $documentNames.sink { names in
+      UserDefaults.standard.set(names.asPropertyList, forKey: defaultsKey)
     }
+  }
   
   private var directory: URL?
   
@@ -84,19 +84,19 @@ class EmojiArtDocumentStore: ObservableObject {
 }
 
 extension Dictionary where Key == EmojiArtDocument, Value == String {
-    var asPropertyList: [String: String] {
-        var uuidToName = [String: String]()
-        for (key, value) in self {
-            uuidToName[key.id.uuidString] = value
-        }
-        return uuidToName
+  var asPropertyList: [String: String] {
+    var uuidToName = [String: String]()
+    for (key, value) in self {
+      uuidToName[key.id.uuidString] = value
     }
-    
-    init(fromPropertyList plist: Any?) {
-        self.init()
-        let uuidToName = plist as? [String: String] ?? [:]
-        for uuid in uuidToName.keys {
-            self[EmojiArtDocument(id: UUID(uuidString: uuid))] = uuidToName[uuid]
-        }
+    return uuidToName
+  }
+  
+  init(fromPropertyList plist: Any?) {
+    self.init()
+    let uuidToName = plist as? [String: String] ?? [:]
+    for uuid in uuidToName.keys {
+      self[EmojiArtDocument(id: UUID(uuidString: uuid))] = uuidToName[uuid]
     }
+  }
 }

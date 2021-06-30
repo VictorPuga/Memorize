@@ -10,7 +10,7 @@ import SwiftUI
 struct EmojiArtDocumentView: View {
   // MARK: - Properties
   @ObservedObject var document: EmojiArtDocument
-
+  
   @GestureState private var gestureZoomScale: CGFloat = 1.0
   private var zoomScale: CGFloat {
     document.steadyStateZoomScale * gestureZoomScale
